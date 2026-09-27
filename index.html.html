@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#d96b22" />
+    <title>工地随身老师傅</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="sidebar">
+        <div class="brand"><span class="brand-mark">安</span><div><b>工地随身老师傅</b><small>现场知识助手</small></div></div>
+        <button class="new-chat" id="newChat">＋ 新建咨询</button>
+        <nav>
+          <button class="nav-item active" data-panel="chat">◉ 智能问答</button>
+          <button class="nav-item" data-panel="inspection">◈ 智能巡检</button>
+          <button class="nav-item" data-panel="knowledge">▣ 知识库</button>
+          <button class="nav-item" data-panel="dashboard">▥ 管理看板</button>
+        </nav>
+        <div class="guardrail"><span>●</span><div><b>工程安全护栏已开启</b><small>红线问题优先预警 · 答案可溯源</small></div></div>
+        <div class="profile"><span>工</span><div><b>现场体验账号</b><small>工友模式</small></div><button id="roleToggle" title="切换角色">⇄</button></div>
+      </aside>
+
+      <section class="content">
+        <header class="topbar"><div><h1 id="pageTitle">今天现场有什么想问？</h1><p id="pageSub">老师傅在，规范、手艺和安全都帮你说清楚。</p></div><div class="status"><i></i> 服务正常 <button class="mobile-menu" id="mobileMenu">☰</button></div></header>
+
+        <section id="chatPanel" class="panel active">
+          <div class="welcome" id="welcome">
+            <div class="helmet">👷</div>
+            <h2>你好，我是你的随身老师傅</h2>
+            <p>说说现场遇到的事。我会用大白话讲明白，并把规范依据一起给你。</p>
+            <div class="role-pills"><button class="role-pill active" data-role="worker">我是工友</button><button class="role-pill" data-role="technician">我是技术员</button></div>
+            <div class="suggestions">
+              <button data-question="马牙槎先退后进是咋回事？"><span>砌筑</span> 马牙槎怎么留？</button>
+              <button data-question="混凝土冬天浇筑温度有啥要求？"><span>混凝土</span> 冬期入模温度</button>
+              <button data-question="临边作业不用系安全带行不行？"><span class="danger">安全</span> 临边要系安全带吗？</button>
+              <button data-question="模板拼缝漏浆怎么控制？"><span>模板</span> 拼缝漏浆怎么办？</button>
+            </div>
+          </div>
+          <div class="messages" id="messages" aria-live="polite"></div>
+          <div class="composer-wrap"><div class="quick-row"><button data-question="钢筋保护层多厚？">钢筋保护层</button><button data-question="脚手架上能堆多少材料？">脚手架堆料</button><button data-question="工友晕倒受伤第一件事做什么？">紧急处置</button></div><div class="composer"><button class="mic" id="micButton" title="按下开始语音输入">🎙</button><textarea id="questionInput" rows="1" placeholder="输入问题，或点击麦克风说话…"></textarea><button class="send" id="sendButton" title="发送">↑</button></div><p class="composer-hint" id="voiceHint">技术问题将附知识出处；关键安全事项请以现场交底和最新规范为准。</p></div>
+        </section>
+
+        <section id="inspectionPanel" class="panel">
+          <div class="section-heading"><div><h2>现场智能巡检</h2><p>照片初筛 + 人工复核 + 老师傅整改建议，一条问题闭环到底。</p></div><span class="human-badge">● 人工复核必需</span></div>
+          <div class="inspection-layout">
+            <article class="scan-card">
+              <div class="scan-steps"><span class="current">1 上传照片</span><i></i><span>2 初筛建议</span><i></i><span>3 整改闭环</span></div>
+              <label class="drop-zone" id="dropZone" for="photoInput"><span id="uploadIcon">📷</span><b id="uploadTitle">拍摄或上传现场照片</b><small id="uploadHint">支持 JPG、PNG；建议拍清作业面和防护细节</small><img id="previewImage" alt="巡检照片预览" /></label>
+              <input id="photoInput" type="file" accept="image/*" hidden />
+              <div class="inspection-options"><label>巡检区域<select id="areaSelect"><option>主体施工区 · 3F</option><option>外脚手架作业面</option><option>临时用电区域</option><option>材料堆放区</option></select></label><label>巡检类型<select id="typeSelect"><option>安全文明施工</option><option>质量实测实量</option><option>临时用电</option></select></label></div>
+              <button class="scan-button" id="scanButton">开始智能初筛 <span>→</span></button>
+              <p class="scan-note">识别结果只作辅助提示，必须由安全员或技术负责人现场确认后才能关闭问题。</p>
+            </article>
+            <article class="inspection-result" id="inspectionResult"><div class="result-placeholder"><span>🔎</span><h3>等待巡检照片</h3><p>上传现场照片后，系统将基于安全检查清单生成待核验项，并联动老师傅知识库给出整改方向。</p></div></article>
+          </div>
+          <div class="closed-loop"><span>照片 / 巡检项</span><b>→</b><span>人工确认问题</span><b>→</b><span>老师傅整改指引</span><b>→</b><span>复查销项 / 看板</span></div>
+          <article class="issue-card"><div><h3>待复查问题</h3><p>本地演示数据，仅用于展示整改流程。</p></div><div id="issueList" class="issue-list"></div></article>
+        </section>
+
+        <section id="knowledgePanel" class="panel"><div class="section-heading"><div><h2>知识库</h2><p>已接入的演示种子知识，回答只在有依据时给出。</p></div><button class="outline" id="importExperience">＋ 录入老师傅经验</button></div><div class="kb-grid" id="kbGrid"></div></section>
+        <section id="dashboardPanel" class="panel"><div class="section-heading"><div><h2>现场知识看板</h2><p>帮助项目部找到班组最需要补齐的知识点。</p></div><button class="outline" id="exportMisses">导出未命中问题</button></div><div class="metrics"><article><small>今日咨询</small><b id="queryCount">0</b><em>实时统计</em></article><article><small>安全红线提醒</small><b id="safetyCount">0</b><em>优先拦截</em></article><article><small>知识库命中率</small><b id="hitRate">--</b><em>有出处才作答</em></article></div><div class="dashboard-grid"><article class="card"><h3>高频咨询工序</h3><div class="bars" id="topicBars"></div></article><article class="card"><h3>待老师傅补录</h3><div class="empty-list" id="missList">暂无未命中问题，继续收集现场反馈。</div></article></div></section>
+      </section>
+    </main>
+    <dialog id="experienceDialog"><form method="dialog"><button class="dialog-close" value="cancel">×</button><h2>录入老师傅经验</h2><p>口述经验会整理为可检索条目，提交前请由技术负责人校验。</p><label>工序 / 部位<input id="experienceTitle" placeholder="例如：抹灰 · 基层处理" /></label><label>实操诀窍<textarea id="experienceText" placeholder="说说怎么做、容易犯什么错…"></textarea></label><button class="primary" id="saveExperience" value="default">保存为待审核经验</button></form></dialog>
+    <script src="./app.js"></script>
+  </body>
+</html>
